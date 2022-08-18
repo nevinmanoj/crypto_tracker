@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_tracker/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -32,13 +33,13 @@ class DatabaseService {
     }, SetOptions(merge: true));
   }
 
-  Future createFavoritesAndHistory() async {
-    await FirebaseFirestore.instance.collection('UserInfo').doc(uid).update({
-      'Favorites': [],
-    });
-
-    await FirebaseFirestore.instance.collection('UserInfo').doc(uid).update({
-      'history': {},
-    });
+  Future createWallet() async {
+    // await FirebaseFirestore.instance.collection('userInfo/inventory').doc(uid).set({categories[i]:{},},SetOptions(merge: true));
+    for (int i = 0; i < unit.length; i++) {
+      await FirebaseFirestore.instance
+          .collection('UserInfo/${uid}/Wallet')
+          .doc(unit[i])
+          .set({}, SetOptions(merge: true));
+    }
   }
 }

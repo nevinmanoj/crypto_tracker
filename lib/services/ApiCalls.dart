@@ -15,3 +15,12 @@ Future getCurrencies() async {
 
   return model;
 }
+
+Stream<http.Response> getMarketStream() async* {
+  yield* Stream.periodic(Duration(milliseconds: 500), (_) async {
+    var apiUrl = 'https://api.wazirx.com/api/v2/tickers';
+    var url = Uri.parse(apiUrl);
+    var response = await http.get(url);
+    return response;
+  }).asyncMap((event) async => await event);
+}

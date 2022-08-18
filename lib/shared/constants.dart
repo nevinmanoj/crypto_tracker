@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 const primaryAppColor = Colors.black;
+const secondaryAppColor = Color.fromRGBO(255, 143, 0, 1);
+
+List unit = ['inr', 'btc', 'usdt', 'wrx'];
 
 var authInputDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(10),

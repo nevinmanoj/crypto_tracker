@@ -28,7 +28,7 @@ class CoinModel {
   });
 
   String baseUnit;
-  QuoteUnit? quoteUnit;
+  String? quoteUnit;
   String low;
   String high;
   String last;
@@ -42,7 +42,7 @@ class CoinModel {
 
   factory CoinModel.fromJson(Map<String, dynamic> json) => CoinModel(
         baseUnit: json["base_unit"],
-        quoteUnit: quoteUnitValues.map[json["quote_unit"]],
+        quoteUnit: json["quote_unit"],
         low: json["low"],
         high: json["high"],
         last: json["last"],
