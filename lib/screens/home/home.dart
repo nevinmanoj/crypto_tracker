@@ -3,6 +3,8 @@ import 'package:crypto_tracker/screens/home/Settings.dart';
 import 'package:crypto_tracker/screens/home/market.dart';
 import 'package:crypto_tracker/screens/home/wallet/wallet.dart';
 import 'package:crypto_tracker/services/ApiCalls.dart';
+import 'package:crypto_tracker/services/database.dart';
+import 'package:crypto_tracker/shared/DataModels.dart';
 import 'package:crypto_tracker/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,18 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: primaryAppColor,
-      //   onPressed: () async {
-      //     var data = getCurrencies();
-      //   },
-      // ),
+      floatingActionButton:
+          _selectedIndex == 2 ? CustomFABwindow() : Container(),
       appBar: AppBar(
         centerTitle: true,
         title: Text(navOptions[_selectedIndex]),
         backgroundColor: Colors.black,
       ),
       body: Center(
+        // child: ElevatedButton(
+        //   child: Icon(Icons.add_circle_rounded),
+        //   onPressed: () async {
+        //     print('home add test');
+        //     // DatabaseService(uid: user!.uid).addCoin(
+        //     //     id: 'adainr',
+        //     //     Coin: WalletCoinInfo(
+        //     //         buyPrice: '100',
+        //     //         buyQty: '20',
+        //     //         name: 'ADA/INR',
+        //     //         market: 'inr'));
+        //   },
+        // ),
+
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -28,11 +28,11 @@ class CoinModel {
   });
 
   String baseUnit;
-  String? quoteUnit;
+  String quoteUnit;
   String low;
   String high;
   String last;
-  Type? type;
+  String type;
   dynamic open;
   String volume;
   String sell;
@@ -46,7 +46,7 @@ class CoinModel {
         low: json["low"],
         high: json["high"],
         last: json["last"],
-        type: typeValues.map[json["type"]],
+        type: json["type"],
         open: json["open"],
         volume: json["volume"],
         sell: json["sell"],
@@ -57,11 +57,11 @@ class CoinModel {
 
   Map<String, dynamic> toJson() => {
         "base_unit": baseUnit,
-        "quote_unit": quoteUnitValues.reverse[quoteUnit],
+        "quote_unit": quoteUnit,
         "low": low,
         "high": high,
         "last": last,
-        "type": typeValues.reverse[type],
+        "type": type,
         "open": open,
         "volume": volume,
         "sell": sell,
@@ -71,29 +71,124 @@ class CoinModel {
       };
 }
 
-enum QuoteUnit { INR, BTC, USDT, WRX }
+// enum QuoteUnit { INR, BTC, USDT, WRX }
 
-final quoteUnitValues = EnumValues({
-  "btc": QuoteUnit.BTC,
-  "inr": QuoteUnit.INR,
-  "usdt": QuoteUnit.USDT,
-  "wrx": QuoteUnit.WRX
-});
+// final quoteUnitValues = EnumValues({
+//   "btc": QuoteUnit.BTC,
+//   "inr": QuoteUnit.INR,
+//   "usdt": QuoteUnit.USDT,
+//   "wrx": QuoteUnit.WRX
+// });
 
-enum Type { SPOT }
+// enum Type { SPOT }
 
-final typeValues = EnumValues({"SPOT": Type.SPOT});
+// final typeValues = EnumValues({"SPOT": Type.SPOT});
 
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap = {};
+// class EnumValues<T> {
+//   Map<String, T> map;
+//   Map<T, String> reverseMap = {};
 
-  EnumValues(this.map);
+//   EnumValues(this.map);
 
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
+//   Map<T, String> get reverse {
+//     if (reverseMap == null) {
+//       reverseMap = map.map((k, v) => new MapEntry(v, k));
+//     }
+//     return reverseMap;
+//   }
+// }
+//******************************Data model for wallet***************************
+// To parse this JSON data, do
+//
+//     final SellcoinModel = SellcoinModelFromJson(jsonString);
+
+SellCoinModel SellcoinModelFromJson(String str) =>
+    SellCoinModel.fromJson(json.decode(str));
+
+String SellcoinModelToJson(SellCoinModel data) => json.encode(data.toJson());
+
+class SellCoinModel {
+  SellCoinModel({
+    required this.at,
+    required this.ticker,
+  });
+
+  int at;
+  Ticker ticker;
+
+  factory SellCoinModel.fromJson(Map<String, dynamic> json) => SellCoinModel(
+        at: json["at"],
+        ticker: Ticker.fromJson(json["ticker"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "at": at,
+        "ticker": ticker.toJson(),
+      };
+}
+
+class Ticker {
+  Ticker({
+    required this.buy,
+    required this.sell,
+    required this.low,
+    required this.high,
+    required this.last,
+    required this.vol,
+  });
+
+  String buy;
+  String sell;
+  String low;
+  String high;
+  String last;
+  String vol;
+
+  factory Ticker.fromJson(Map<String, dynamic> json) => Ticker(
+        buy: json["buy"],
+        sell: json["sell"],
+        low: json["low"],
+        high: json["high"],
+        last: json["last"],
+        vol: json["vol"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "buy": buy,
+        "sell": sell,
+        "low": low,
+        "high": high,
+        "last": last,
+        "vol": vol,
+      };
+}
+
+//*************************************wallet coin**********************************
+
+class WalletCoinInfo {
+  WalletCoinInfo({
+    required this.buyQty,
+    required this.market,
+    required this.name,
+    required this.buyPrice,
+  });
+
+  double buyPrice;
+  String market;
+  String name;
+  double buyQty;
+
+  factory WalletCoinInfo.fromJson(Map<String, dynamic> json) => WalletCoinInfo(
+        buyPrice: json["buyPrice"],
+        market: json["market"],
+        name: json["name"],
+        buyQty: json["buyQty"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "buyPrice": buyPrice,
+        "market": market,
+        "name": name,
+        "buyQty": buyQty,
+      };
 }

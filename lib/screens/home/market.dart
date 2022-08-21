@@ -39,6 +39,11 @@ class _MarketScreenState extends State<MarketScreen> {
                       });
                     },
                     child: Container(
+                      decoration: BoxDecoration(
+                          color:
+                              unit[i] == curM ? Colors.green : primaryAppColor),
+                      height: ht * 0.05,
+                      width: wt * 0.185,
                       child: Center(
                           child: Text(
                         unit[i].toUpperCase(),
@@ -48,11 +53,6 @@ class _MarketScreenState extends State<MarketScreen> {
                                 ? primaryAppColor
                                 : Colors.white),
                       )),
-                      decoration: BoxDecoration(
-                          color:
-                              unit[i] == curM ? Colors.green : primaryAppColor),
-                      height: ht * 0.05,
-                      width: wt * 0.185,
                     ),
                   ),
                 );
@@ -96,7 +96,7 @@ class _MarketScreenState extends State<MarketScreen> {
                             child: Row(
                               children: [
                                 Text(
-                                    "${Coins[CoinId[index]]!.name} => ${Coins[CoinId[index]]!.sell} ${Coins[CoinId[index]]!.quoteUnit!.toUpperCase()}"),
+                                    "${Coins[CoinId[index]]!.name} => ${Coins[CoinId[index]]!.sell} ${Coins[CoinId[index]]!.quoteUnit.toUpperCase()}"),
                               ],
                             ),
                           ),

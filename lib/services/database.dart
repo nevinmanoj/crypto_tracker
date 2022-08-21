@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_tracker/shared/DataModels.dart';
 import 'package:crypto_tracker/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,5 +42,17 @@ class DatabaseService {
           .doc(unit[i])
           .set({}, SetOptions(merge: true));
     }
+  }
+
+  Future addCoin({required String id, required WalletCoinInfo Coin}) async {
+    String msg = "Coin added to your wallet";
+    await FirebaseFirestore.instance
+        .collection('UserInfo/${uid}/Wallet')
+        .doc(Coin.market)
+        .set({'${id}': Coin.toJson()}, SetOptions(merge: true)).then(
+            (value) => {},
+            onError: (e) => msg = "Error updating document $e");
+
+    return msg;
   }
 }

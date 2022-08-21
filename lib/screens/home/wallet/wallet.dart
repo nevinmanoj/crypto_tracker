@@ -1,4 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_tracker/screens/home/Profile.dart';
+import 'package:crypto_tracker/screens/home/wallet/addPage.dart';
 import 'package:crypto_tracker/services/ApiCalls.dart';
 import 'package:crypto_tracker/shared/DataModels.dart';
 import 'package:crypto_tracker/shared/constants.dart';
@@ -32,7 +35,7 @@ class _WalletScreenState extends State<WalletScreen> {
             height: ht * 0.1,
             padding: EdgeInsets.fromLTRB(0, ht * 0.01, 0, 0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
                 color: Colors.grey[300]),
             child: Column(children: [
               Padding(
@@ -104,17 +107,86 @@ class _WalletScreenState extends State<WalletScreen> {
                 .collection('UserInfo/${user!.uid}/Wallet')
                 .doc(curM)
                 .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+            builder: (context, Wsnapshot) {
+              if (Wsnapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
-              dynamic Coins = snapshot.data!.data() as Map<String, dynamic>;
+              Map<String, dynamic> walletCoins =
+                  Wsnapshot.data!.data() as Map<String, dynamic>;
+              List wCoinId = walletCoins.keys.toList();
+              return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: wCoinId.length,
+                  itemBuilder: ((context, j) {
+                    return StreamBuilder<http.Response>(
+                        stream: getCoinStream(id: wCoinId[j]),
+                        builder: (context, Msnapshot) {
+                          if (!Msnapshot.hasData)
+                            return Center(child: CircularProgressIndicator());
 
-              return Container();
+                          SellCoinModel liveCoin =
+                              SellcoinModelFromJson(Msnapshot.data!.body);
+
+                          // if (CoinId == null || Coins == null)
+                          //   return Center(
+                          //     child: Text("NO DATA"),
+                          //   );
+
+                          // return Container();
+
+                          return Padding(
+                            padding: EdgeInsets.fromLTRB(0, ht * 0.005, 0, 0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: j % 2 == 0
+                                    ? Colors.grey[100]
+                                    : Colors.grey[200],
+                                // borderRadius: BorderRadius.circular(10)
+                              ),
+                              height: ht * 0.1,
+                              width: wt,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    wt * 0.05, ht * 0.005, wt * 0.05, 0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                        "${wCoinId[j].toUpperCase()} => ${liveCoin.ticker.sell} ${wCoinId[j]}"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                  }));
             })
       ],
+    );
+  }
+}
+
+class CustomFABwindow extends StatelessWidget {
+  const CustomFABwindow({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return OpenContainer(
+      transitionDuration: Duration(milliseconds: 500),
+      closedShape: CircleBorder(),
+      transitionType: ContainerTransitionType.fadeThrough,
+      closedBuilder: (context, OpenContainer) => Container(
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: primaryAppColor),
+        height: 50,
+        width: 50,
+        child: Icon(
+          Icons.add,
+          color: secondaryAppColor,
+        ),
+      ),
+      openBuilder: (context, action) => AddCoin(),
     );
   }
 }
