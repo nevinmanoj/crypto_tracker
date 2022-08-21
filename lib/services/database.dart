@@ -55,4 +55,11 @@ class DatabaseService {
 
     return msg;
   }
+
+  Future deleteItem({required String id, required String market}) async {
+    await FirebaseFirestore.instance
+        .collection('UserInfo/${uid}/Wallet')
+        .doc(market)
+        .update({id: FieldValue.delete()});
+  }
 }

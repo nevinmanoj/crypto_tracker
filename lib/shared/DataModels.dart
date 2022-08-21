@@ -164,6 +164,8 @@ class Ticker {
 }
 
 //*************************************wallet coin**********************************
+WalletCoinInfo WalletCoinInfoFromJson(String str) =>
+    WalletCoinInfo.fromJson(json.decode(str));
 
 class WalletCoinInfo {
   WalletCoinInfo({

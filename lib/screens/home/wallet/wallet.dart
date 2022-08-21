@@ -2,7 +2,10 @@ import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_tracker/screens/home/Profile.dart';
 import 'package:crypto_tracker/screens/home/wallet/addPage.dart';
+import 'package:crypto_tracker/screens/home/wallet/deleteCoin.dart';
+import 'package:crypto_tracker/screens/home/wallet/editCoin.dart';
 import 'package:crypto_tracker/services/ApiCalls.dart';
+import 'package:crypto_tracker/services/database.dart';
 import 'package:crypto_tracker/shared/DataModels.dart';
 import 'package:crypto_tracker/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,9 +116,14 @@ class _WalletScreenState extends State<WalletScreen> {
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
-              Map<String, dynamic> walletCoins =
+              Map<String, dynamic> wC =
                   Wsnapshot.data!.data() as Map<String, dynamic>;
-              List wCoinId = walletCoins.keys.toList();
+              // print(Wsnapshot.data);
+              // WalletCoinInfo walletCoin = WalletCoinInfo(buyQty: , market: market, name: name, buyPrice: buyPrice);
+
+              List wCoinId = wC.keys.toList();
+
+              print(wC[wCoinId[0]]['name']);
               return ListView.builder(
                   shrinkWrap: true,
                   itemCount: wCoinId.length,
@@ -153,7 +161,19 @@ class _WalletScreenState extends State<WalletScreen> {
                                 child: Row(
                                   children: [
                                     Text(
-                                        "${wCoinId[j].toUpperCase()} => ${liveCoin.ticker.sell} ${wCoinId[j]}"),
+                                        "${wC[wCoinId[j]]['name']} => ${liveCoin.ticker.sell} ${wC[wCoinId[0]]['name'].toString().split("/")[1]}"),
+                                    Spacer(),
+
+                                    EditItem(coin: wC[wCoinId[j]]),
+                                    DeleteItem(id: wCoinId[j], market: curM),
+                                    // IconButton(
+                                    //   icon: Icon(Icons.delete),
+                                    //   onPressed: () async {
+                                    //     DatabaseService(uid: user!.uid)
+                                    //         .deleteItem(
+                                    //             id: wCoinId[j], market: curM);
+                                    //   },
+                                    // ),
                                   ],
                                 ),
                               ),
