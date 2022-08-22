@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_tracker/screens/home/Settings.dart';
 import 'package:crypto_tracker/screens/home/market.dart';
+import 'package:crypto_tracker/screens/home/wallet/components/totalWallet.dart';
 import 'package:crypto_tracker/screens/home/wallet/wallet.dart';
 import 'package:crypto_tracker/services/ApiCalls.dart';
 import 'package:crypto_tracker/services/database.dart';
@@ -28,10 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
+    Text('home'),
     MarketScreen(),
     WalletScreen(),
     SettingsScreen(),
@@ -45,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton:
           _selectedIndex == 2 ? CustomFABwindow() : Container(),
       appBar: AppBar(

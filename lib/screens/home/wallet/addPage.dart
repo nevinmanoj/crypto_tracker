@@ -154,6 +154,7 @@ class _AddCoinState extends State<AddCoin> {
                                 // Navigator.pop(context);
                                 var msg = await DatabaseService(uid: user!.uid)
                                     .addCoin(
+                                        isadd: true,
                                         id: coinName
                                             .replaceAll("/", "")
                                             .toLowerCase(),
@@ -199,6 +200,7 @@ void _showToast({required BuildContext context, required String msg}) {
   final scaffold = ScaffoldMessenger.of(context);
   scaffold.showSnackBar(
     SnackBar(
+      duration: Duration(seconds: 2),
       backgroundColor: primaryAppColor,
       content: Text(msg),
     ),

@@ -1,6 +1,7 @@
 import 'package:crypto_tracker/services/ApiCalls.dart';
 import 'package:crypto_tracker/shared/DataModels.dart';
 import 'package:crypto_tracker/shared/constants.dart';
+import 'package:crypto_tracker/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -62,8 +63,7 @@ class _MarketScreenState extends State<MarketScreen> {
           child: StreamBuilder<http.Response>(
               stream: getMarketStream(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData)
-                  return Center(child: CircularProgressIndicator());
+                if (!snapshot.hasData) return Center(child: MarketLoading());
 
                 Map<String, CoinModel> Coins =
                     coinModelFromJson(snapshot.data!.body);

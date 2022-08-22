@@ -108,6 +108,7 @@ class _MyWidgetState extends State<EditItem> {
                                         var msg = await DatabaseService(
                                                 uid: user!.uid)
                                             .addCoin(
+                                                isadd: false,
                                                 id: widget.coin['name']
                                                     .toString()
                                                     .replaceAll("/", "")
@@ -123,8 +124,10 @@ class _MyWidgetState extends State<EditItem> {
                                                         .toString(),
                                                     market: widget.coin['name']
                                                         .toString()
-                                                        .split("/")[1]));
+                                                        .split("/")[1]
+                                                        .toLowerCase()));
                                         // print(msg);
+                                        _showToast(context: context, msg: msg);
 
                                         Navigator.pop(context);
                                       }
@@ -160,6 +163,17 @@ class _MyWidgetState extends State<EditItem> {
           Icons.edit,
         ));
   }
+}
+
+void _showToast({required BuildContext context, required String msg}) {
+  final scaffold = ScaffoldMessenger.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      duration: Duration(seconds: 2),
+      backgroundColor: primaryAppColor,
+      content: Text(msg),
+    ),
+  );
 }
 
 class newBuyQuantity extends StatefulWidget {

@@ -53,10 +53,12 @@ class _MyWidgetState extends State<DeleteItem> {
                               width: wt * 0.3,
                               child: ElevatedButton(
                                   onPressed: () async {
-                                    await DatabaseService(uid: user!.uid)
-                                        .deleteItem(
-                                            id: widget.id,
-                                            market: widget.market);
+                                    String msg =
+                                        await DatabaseService(uid: user!.uid)
+                                            .deleteItem(
+                                                id: widget.id,
+                                                market: widget.market);
+                                    _showToast(context: context, msg: msg);
                                     Navigator.pop(context);
                                   },
                                   child: Text(
@@ -99,4 +101,15 @@ class _MyWidgetState extends State<DeleteItem> {
           Icons.delete,
         ));
   }
+}
+
+void _showToast({required BuildContext context, required String msg}) {
+  final scaffold = ScaffoldMessenger.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      duration: Duration(seconds: 2),
+      backgroundColor: primaryAppColor,
+      content: Text(msg),
+    ),
+  );
 }

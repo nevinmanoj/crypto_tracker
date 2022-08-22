@@ -26,10 +26,14 @@ Stream<http.Response> getMarketStream() async* {
 }
 
 Stream<http.Response> getCoinStream({required String id}) async* {
-  yield* Stream.periodic(Duration(milliseconds: 500), (_) async {
-    var apiUrl = 'https://api.wazirx.com/api/v2/tickers/${id}';
-    var url = Uri.parse(apiUrl);
-    var response = await http.get(url);
-    return response;
-  }).asyncMap((event) async => await event);
+  try {
+    yield* Stream.periodic(Duration(milliseconds: 500), (_) async {
+      var apiUrl = 'https://api.wazirx.com/api/v2/tickers/${id}';
+      var url = Uri.parse(apiUrl);
+      var response = await http.get(url);
+      return response;
+    }).asyncMap((event) async => await event);
+  } catch (e) {
+    print(e.toString());
+  }
 }

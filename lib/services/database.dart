@@ -44,8 +44,13 @@ class DatabaseService {
     }
   }
 
-  Future addCoin({required String id, required WalletCoinInfo Coin}) async {
-    String msg = "Coin added to your wallet";
+  Future addCoin(
+      {required String id,
+      required WalletCoinInfo Coin,
+      required bool isadd}) async {
+    String msg = isadd
+        ? "${Coin.name} added to your wallet"
+        : "${Coin.name} value edited in your wallet";
     await FirebaseFirestore.instance
         .collection('UserInfo/${uid}/Wallet')
         .doc(Coin.market)
@@ -57,9 +62,13 @@ class DatabaseService {
   }
 
   Future deleteItem({required String id, required String market}) async {
+    String msg = "${id.toUpperCase()} deleted from your wallet";
     await FirebaseFirestore.instance
         .collection('UserInfo/${uid}/Wallet')
         .doc(market)
-        .update({id: FieldValue.delete()});
+        .update({id: FieldValue.delete()}).then((value) => {},
+            onError: (e) => msg = "Error updating document $e");
+    ;
+    return msg;
   }
 }

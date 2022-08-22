@@ -43,6 +43,7 @@ dependencies:
   flutter_spinkit: ^5.1.0
   animations: ^2.0.3
   fluttertoast: ^8.0.9
+  lottie: ^1.4.0
 
 dev_dependencies:
   flutter_test:
